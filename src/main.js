@@ -3,6 +3,8 @@ const os = require('os');
 const fs = require('fs');
 
 const homeDir = path.join(os.homedir(), '/Documents');
+let curDir = homeDir;
+
 
 const electron = require('electron');
 const {
@@ -10,7 +12,8 @@ const {
   BrowserWindow,
   Menu,
   screen,
-  ipcMain
+  ipcMain,
+  shell
 } = electron;
 
 app.on('ready', () => {
@@ -35,14 +38,25 @@ function createWindow() {
   });
 
   mainWindow.loadFile('../public/index.html').then(() => {
-    loadPath(homeDir)
+    dirLoad(homeDir)
   });
 
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   Menu.setApplicationMenu(mainMenu);
 }
 
-async function loadPath(path) {
+ipcMain.on('dirRequest', (e, file) => {
+  let tempDir = path.join(curDir, file);
+
+  if (fs.statSync(tempDir).isDirectory()){
+    dirLoad(tempDir);
+    curDir = tempDir;
+  } else {
+    shell.openPath(tempDir);
+  }
+});
+
+async function dirLoad(path) {
   fs.readdir(path, {
     withFileTypes: true
   }, (error, files) => {

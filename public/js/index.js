@@ -10,12 +10,17 @@ const $fileContainer = document.querySelector('#file-container');
 const fileTemplate = document.querySelector('#file-template').innerHTML;
 
 ipcRenderer.on('dirContent', (e, files) => {
+  $fileContainer.innerHTML = '';
+  renderFile({
+    name: '..'
+  });
+
   files.forEach((file) => {
     renderFile(file);
   });
 
   for (file of $fileContainer.children) {
-    file.addEventListener('dblclick', (e) => filerequest(e.target.innerHTML));
+    file.addEventListener('dblclick', (e) => dirRequest(e.target.innerHTML));
   }
 });
 
@@ -27,8 +32,8 @@ function renderFile(file) {
   $fileContainer.insertAdjacentHTML('beforeend', render);
 }
 
-function fileRequest(fileName) {
-  ipcRenderer.send('fileRequest', fileName);
+function dirRequest(fileName) {
+  ipcRenderer.send('dirRequest', fileName);
 }
 
 async function sendMessage(message) {
