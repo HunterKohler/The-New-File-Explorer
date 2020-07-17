@@ -1,0 +1,19 @@
+{
+  "name": "the-new-file-explorer",
+  "version": "1.0.0",
+  "description": "New file explorer for Windows",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ./src/main.js",
+    "dev": "env-cmd -f ./config/dev.env electron ./src/main.js"
+  },
+  "author": "John Hunter Kohler",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^9.1.0",
+    "env-cmd": "^10.1.0"
+  },
+  "dependencies": {
+    "mustache": "^4.0.1"
+  }
+}
