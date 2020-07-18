@@ -1,12 +1,18 @@
-const homedir = require('os').homedir();
-
 const {
   Menu,
   app
 } = require('electron');
 
-const {dirLoad} = require('./nav');
+const {
+  dirLoad
+} = require('./nav');
 
+const {
+  createWindow
+} = require('./windows');
+
+// TODO Flesh out menu temeplates
+// electron docs: click (menuItem, browserWindow, event)
 const mainMenuTemplate = [{
     label: 'File',
     submenu: [{
@@ -15,7 +21,10 @@ const mainMenuTemplate = [{
       },
       {
         label: 'New Window',
-        accelerator: 'Ctrl+N'
+        accelerator: 'Ctrl+N',
+        click(item, win){
+          createWindow(undefined, win);
+        }
       },
       {
         type: 'separator'
@@ -30,23 +39,29 @@ const mainMenuTemplate = [{
     ]
   },
   {
+    label:'Edit'
+  },
+  {
+    label:'View'
+  },
+  {
     label: 'Goto',
     submenu: [{
         label: 'Root',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, '/');
+        click(item, win) {
+          dirLoad(win, '/');
         }
       },
       {
         label: 'Home',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, '/home');
+        click(item, win) {
+          dirLoad(win, '/home');
         }
       },
       {
         label: 'User',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, homedir);
+        click(item, win) {
+          dirLoad(win, homedir);
         }
       },
       {
@@ -54,32 +69,32 @@ const mainMenuTemplate = [{
       },
       {
         label: 'Desktop',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, `${homedir}/Desktop`);
+        click(item, win) {
+          dirLoad(win, `${homedir}/Desktop`);
         }
       },
       {
         label: 'Documents',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, `${homedir}/Documents`);
+        click(item, win) {
+          dirLoad(win, `${homedir}/Documents`);
         }
       },
       {
         label: 'Downloads',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, `${homedir}/Downloads`);
+        click(item, win) {
+          dirLoad(win, `${homedir}/Downloads`);
         }
       },
       {
         label: 'Pictures',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, `${homedir}/Pictures`);
+        click(item, win) {
+          dirLoad(win, `${homedir}/Pictures`);
         }
       },
       {
         label: 'Videos',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, `${homedir}/Videos`);
+        click(item, win) {
+          dirLoad(win, `${homedir}/Videos`);
         }
       },
       {
@@ -87,8 +102,8 @@ const mainMenuTemplate = [{
       },
       {
         label: 'Trash',
-        click(item, focusedWindow) {
-          dirLoad(focusedWindow, `${homedir}/.local/share/Trash/files`);
+        click(item, win) {
+          dirLoad(win, `${homedir}/.local/share/Trash/files`);
         }
       }
     ]
@@ -102,11 +117,11 @@ if (process.env.NODE_ENV === 'development') {
     submenu: [{
         label: 'Toggle DevTools',
         accelerator: 'Ctrl+I',
-        click(item, focusedWindow) {
-          focusedWindow.toggleDevTools();
+        click(item, win) {
+          win.toggleDevTools();
         }
       },
-      {
+      { //TODO make built in reload function and add ui button
         role: 'reload',
       }
     ]

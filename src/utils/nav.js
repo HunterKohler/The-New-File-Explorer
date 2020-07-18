@@ -10,16 +10,17 @@ const {
   shell
 } = electron;
 
-async function dirLoad(currentWindow, dirPath) {
+//TODO improve currentWebContents name structure
+async function dirLoad(currentWebContents, dirPath) {
   fs.readdir(dirPath, {
     withFileTypes: true
   }, (error, files) => {
-    currentWindow.webContents.send('dirContent', dirPath, files);
+    currentWebContents.send('dirContent', dirPath, files);
   });
 }
 
-async function fileNotFound(currentWindow, filePath) {
-  currentWindow.webContents.send('fileNotFound', filePath);
+async function fileNotFound(currentWebContents, filePath) {
+  currentWebContents.send('fileNotFound', filePath);
 }
 
 module.exports = {

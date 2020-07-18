@@ -3,6 +3,7 @@
 
 <head>
   <title>The New File Explorer</title>
+  <link rel="stylesheet" href="./css/icons/font-awesome.css">
   <link rel="stylesheet" href="./css/styles.css">
   <link rel="stylesheet" href="./css/fonts.css">
 </head>
@@ -11,8 +12,12 @@
 
   <header id="main-header">
     <div>
-      <form id="directory-path-form">
-        <input id="directory-path" type="text" name="dirPath">
+      <!-- <div class="fa fa-folder-open-o-fa-x2" id="header-icon"></div> -->
+
+      <form id="dir-path-form">
+        <label class="fa fa-folder-open-o" id="dir-path-icon"></label>
+        <div id="dir-path-divider"></div>
+        <input id="dir-path-input" type="text" name="dirPath">
       </form>
     </div>
   </header>
@@ -20,7 +25,6 @@
   <div id="main-content">
     <div id="file-container"></div>
   </div>
-
 
   <div class="template" id="file-template">
     <div class="file noselect">

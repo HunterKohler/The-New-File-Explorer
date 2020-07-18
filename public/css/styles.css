@@ -8,9 +8,23 @@ body {
   font-family: 'Inconsolata', monospace;
   font-weight: 500;
   color: rgb(200, 200, 200);
-  background-color: rgb(50, 50, 50)
+  background-color: rgb(50, 50, 50);
+  overflow-x: hidden;
 }
 
+input, select, textarea, button {
+  font-family: inherit;
+}
+
+input{
+  border: 0;
+}
+
+input:focus{
+  outline-width: 0;
+}
+
+/* TODO Style scrollbar */
 .noselect {
   -webkit-touch-callout: none;
   /* iOS Safari */
@@ -43,12 +57,29 @@ body {
   padding: 5px;
 }
 
-#directory-path {
-  font-size: 18px;
-  padding: 10px;
-  width:100%;
+#dir-path-form {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  justify-content: space-between;
+  height: 35px;
 }
 
-#directory-path:focus {
-  outline-width: 0;
+#dir-path-icon {
+  font-size: 1.5em;
+  padding: 0 10px;
+}
+
+#dir-path-divider {
+  border-left: 1px solid black;
+  margin: 0;
+  height: 100%;
+}
+
+#dir-path-input {
+  margin: 0;
+  font-size: 16px;
+  background: transparent;
+  flex: 1;
+  padding-left: 15px;
 }

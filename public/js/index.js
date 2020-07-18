@@ -1,3 +1,5 @@
+const path = require('path');
+
 const electron = require('electron');
 const Mustache = require('mustache');
 
@@ -8,18 +10,18 @@ const {
 let curDir = '/';
 
 const $fileContainer = document.querySelector('#file-container');
-const $directoryPathForm = document.querySelector('#directory-path-form');
-const $directoryPath = document.querySelector('#directory-path');
+const $directoryPathForm = document.querySelector('#dir-path-form');
+const $directoryPath = document.querySelector('#dir-path-input');
 
 const fileTemplate = document.querySelector('#file-template').innerHTML;
 
 $directoryPathForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  dirRequest($directoryPath.value, true);
+  dirRequest($directoryPath.value);
 });
 
-ipcRenderer.on('dirContent', (e, dirPath,files) => {
+ipcRenderer.on('dirContent', (e, dirPath, files) => {
   curDir = dirPath;
   $directoryPath.value = curDir;
   $fileContainer.innerHTML = '';
@@ -32,12 +34,14 @@ ipcRenderer.on('dirContent', (e, dirPath,files) => {
   });
 
   for (file of $fileContainer.children) {
-    file.addEventListener('dblclick', (e) => dirRequest(e.target.innerHTML));
+    file.addEventListener('dblclick', (e) => {
+      dirRequest(path.join(curDir, e.target.innerHTML));
+    });
   }
 });
 
 ipcRenderer.on('fileNotFound', (e, file) => {
-  $directoryPath.value = curDir;
+  dirRequest(curDir);
   alert(`File ${file} not found.`);
 });
 
@@ -48,8 +52,8 @@ function renderFile(file) {
   $fileContainer.insertAdjacentHTML('beforeend', render);
 }
 
-function dirRequest(fileName, full) {
-  ipcRenderer.send('dirRequest', fileName, full);
+function dirRequest(dirPath) {
+  ipcRenderer.send('dirRequest', dirPath);
 }
 
 async function sendMessage(message) {
