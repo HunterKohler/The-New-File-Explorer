@@ -2,10 +2,6 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const homeDir = path.join(os.homedir(), '/Documents');
-let curDir = homeDir;
-
-
 const electron = require('electron');
 const {
   app,
@@ -15,6 +11,16 @@ const {
   ipcMain,
   shell
 } = electron;
+
+const {
+  mainMenu,
+  mainMenuTemplate
+} = require('./utils/menus');
+
+const {
+  dirLoad,
+  fileNotFound
+} = require('./utils/nav');
 
 app.on('ready', () => {
   const displaySize = screen.getPrimaryDisplay().size;
@@ -27,6 +33,7 @@ ipcMain.on('message', (e, message) => {
 });
 
 let mainWindow;
+let curDir = os.homedir();
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -38,69 +45,21 @@ function createWindow() {
   });
 
   mainWindow.loadFile('../public/index.html').then(() => {
-    dirLoad(homeDir)
+    dirLoad(mainWindow, curDir);
   });
 
-  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   Menu.setApplicationMenu(mainMenu);
 }
 
-ipcMain.on('dirRequest', (e, file) => {
-  let tempDir = path.join(curDir, file);
+ipcMain.on('dirRequest', (e, file, full) => {
+  let tempDir = full ? file : path.join(curDir, file);
 
-  if (fs.statSync(tempDir).isDirectory()){
-    dirLoad(tempDir);
+  if (!fs.existsSync(tempDir)) {
+    fileNotFound(mainWindow, tempDir);
+  } else if (fs.statSync(tempDir).isDirectory()) {
+    dirLoad(mainWindow, tempDir);
     curDir = tempDir;
   } else {
     shell.openPath(tempDir);
   }
 });
-
-async function dirLoad(path) {
-  fs.readdir(path, {
-    withFileTypes: true
-  }, (error, files) => {
-    mainWindow.webContents.send('dirContent', files);
-  });
-}
-
-const mainMenuTemplate = [{
-  label: 'File',
-  submenu: [{
-      label: 'New Tab',
-      accelerator: 'Ctrl+T'
-    },
-    {
-      label: 'New Window',
-      accelerator: 'Ctrl+N'
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Quit',
-      accelerator: 'Ctrl+Q',
-      click() {
-        app.quit();
-      }
-    }
-  ]
-}]
-
-
-if (process.env.NODE_ENV === 'development') {
-  mainMenuTemplate.push({
-    label: 'DevTools',
-    submenu: [{
-        label: 'Toggle DevTools',
-        accelerator: 'Ctrl+I',
-        click(item, focusedWindow) {
-          focusedWindow.toggleDevTools();
-        }
-      },
-      {
-        role: 'reload',
-      }
-    ]
-  })
-}

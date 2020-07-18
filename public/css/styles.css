@@ -1,19 +1,29 @@
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   font-size: 16px;
   font-family: 'Inconsolata', monospace;
   font-weight: 500;
   color: rgb(200, 200, 200);
-
-  background-color:rgb(50, 50, 50)
+  background-color: rgb(50, 50, 50)
 }
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -25,10 +35,20 @@ body {
   margin-bottom: -16px;
 }
 
-.file :hover{
-  background-color:rgb(100, 100, 100);
+.file :hover {
+  background-color: rgb(100, 100, 100);
 }
 
 .file p {
   padding: 5px;
+}
+
+#directory-path {
+  font-size: 18px;
+  padding: 10px;
+  width:100%;
+}
+
+#directory-path:focus {
+  outline-width: 0;
 }

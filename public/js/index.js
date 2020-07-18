@@ -5,11 +5,23 @@ const {
   ipcRenderer
 } = electron;
 
+let curDir = '/';
+
 const $fileContainer = document.querySelector('#file-container');
+const $directoryPathForm = document.querySelector('#directory-path-form');
+const $directoryPath = document.querySelector('#directory-path');
 
 const fileTemplate = document.querySelector('#file-template').innerHTML;
 
-ipcRenderer.on('dirContent', (e, files) => {
+$directoryPathForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  dirRequest($directoryPath.value, true);
+});
+
+ipcRenderer.on('dirContent', (e, dirPath,files) => {
+  curDir = dirPath;
+  $directoryPath.value = curDir;
   $fileContainer.innerHTML = '';
   renderFile({
     name: '..'
@@ -24,6 +36,10 @@ ipcRenderer.on('dirContent', (e, files) => {
   }
 });
 
+ipcRenderer.on('fileNotFound', (e, file) => {
+  $directoryPath.value = curDir;
+  alert(`File ${file} not found.`);
+});
 
 function renderFile(file) {
   const render = Mustache.render(fileTemplate, {
@@ -32,8 +48,8 @@ function renderFile(file) {
   $fileContainer.insertAdjacentHTML('beforeend', render);
 }
 
-function dirRequest(fileName) {
-  ipcRenderer.send('dirRequest', fileName);
+function dirRequest(fileName, full) {
+  ipcRenderer.send('dirRequest', fileName, full);
 }
 
 async function sendMessage(message) {
