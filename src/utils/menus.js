@@ -1,10 +1,13 @@
+const homedir = require('os').homedir();
+
 const {
   Menu,
   app
 } = require('electron');
 
 const {
-  dirLoad
+  dirLoad,
+  currentDir
 } = require('./nav');
 
 const {
@@ -12,16 +15,17 @@ const {
 } = require('./windows');
 
 // TODO Flesh out menu temeplates
+// TODO Menu shortcuts dont support macos cmd instead of CmdOrCtrl
 // electron docs: click (menuItem, browserWindow, event)
 const mainMenuTemplate = [{
     label: 'File',
     submenu: [{
         label: 'New Tab',
-        accelerator: 'Ctrl+T'
+        accelerator: 'CmdOrCtrl+T'
       },
       {
         label: 'New Window',
-        accelerator: 'Ctrl+N',
+        accelerator: 'CmdOrCtrl+N',
         click(item, win){
           createWindow(undefined, win);
         }
@@ -31,7 +35,7 @@ const mainMenuTemplate = [{
       },
       {
         label: 'Quit',
-        accelerator: 'Ctrl+Q',
+        accelerator: 'CmdOrCtrl+Q',
         click() {
           app.quit();
         }
@@ -116,13 +120,17 @@ if (process.env.NODE_ENV === 'development') {
     label: 'DevTools',
     submenu: [{
         label: 'Toggle DevTools',
-        accelerator: 'Ctrl+I',
+        accelerator: 'CmdOrCtrl+I',
         click(item, win) {
           win.toggleDevTools();
         }
       },
       { //TODO make built in reload function and add ui button
-        role: 'reload',
+        label: 'reload',
+        accelerator: 'CmdOrCtrl+R',
+        click(item, {webContents}){
+          dirLoad(webContents);
+        }
       }
     ]
   });

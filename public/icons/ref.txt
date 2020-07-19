@@ -1,4 +1,0 @@
-
-
-  Font-awesome icons are under public/fonts/icon-fonts due to formatting
-also they are preimplemented in css maybe idk.

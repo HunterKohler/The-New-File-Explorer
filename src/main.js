@@ -24,6 +24,8 @@ const {
   mainMenu
 } = require('./utils/menus');
 
+// NOTE Not supporting MACOS
+
 app.on('ready', () => {
   Menu.setApplicationMenu(mainMenu);
 

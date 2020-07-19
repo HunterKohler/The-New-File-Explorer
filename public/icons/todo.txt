@@ -1,1 +1,0 @@
-TODO Import more icons from the atom-file-icon packages [font-awsome 4.7.0 already imported]

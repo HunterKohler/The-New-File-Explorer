@@ -1,4 +1,5 @@
 const fs = require('fs');
+const homedir = require('os').homedir();
 
 const electron = require('electron');
 const {
@@ -10,12 +11,12 @@ const {
   shell
 } = electron;
 
-//TODO improve currentWebContents name structure
-async function dirLoad(currentWebContents, dirPath) {
+//TODO improve dirload name structure
+async function dirLoad(webContent, dirPath = homedir) {
   fs.readdir(dirPath, {
     withFileTypes: true
   }, (error, files) => {
-    currentWebContents.send('dirContent', dirPath, files);
+    webContent.send('dirContent', dirPath, files);
   });
 }
 
