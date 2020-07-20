@@ -11,11 +11,17 @@ const {
   shell
 } = electron;
 
+const {
+  File
+} = require('./file');
+
 //TODO improve dirload name structure
 async function dirLoad(webContent, dirPath = homedir) {
   fs.readdir(dirPath, {
     withFileTypes: true
   }, (error, files) => {
+    files = files.map((file) => new File(file.name, file.isDirectory()));
+
     webContent.send('dirContent', dirPath, files);
   });
 }
