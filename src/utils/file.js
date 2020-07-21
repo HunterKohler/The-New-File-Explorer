@@ -37,7 +37,7 @@ class File {
 
     this.icon = getIcon(this) || new IconMin(this.isDir ? 'folder' : 'text', 'light-grey');
 
-    this.type = undefined; // use fs.stats.mode ???
+    this.type = this.icon.type || ''; // TODO check for better way to type MAYBE
 
     //TODO integrate this.icon == undefined into icon.js
     // TODO consider changing the icons for no matches

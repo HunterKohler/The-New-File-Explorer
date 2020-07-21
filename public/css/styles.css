@@ -64,7 +64,7 @@ input:focus {
   width: 20%;
   overflow: hidden;
   margin: 5px 25px 5px 10px;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .file-icon {
@@ -75,21 +75,21 @@ input:focus {
   width: 20%;
   overflow: hidden;
   margin: 5px 25px 5px 10px;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .file-size {
   width: 20%;
   overflow: hidden;
   margin: 5px 25px 5px 10px;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .file-modified {
   width: 20%;
   overflow: hidden;
   margin: 5px 25px 5px 10px;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 #dir-path-form {
@@ -121,6 +121,7 @@ input:focus {
 
 #dir-items-header {
   background-color: rgb(175, 175, 175);
+  min-height:30px;
   display: flex;
   align-items: center;
 }
@@ -138,4 +139,19 @@ input:focus {
   margin: 0;
   color: black;
   padding: 0px 10px;
+}
+
+#content{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#main-content {
+  overflow-y: auto;
+  flex-grow:1;
 }

@@ -9,6 +9,7 @@ const {
 const Mustache = require('mustache');
 
 let curDir = '/';
+let dirEntries = [];
 
 const $dirPathForm = document.querySelector('#dir-path-form');
 const $dirPath = document.querySelector('#dir-path-input');
@@ -33,16 +34,19 @@ ipcRenderer.on('dirContent', (e, dirPath, files) => {
   curDir = dirPath;
   $dirPath.value = curDir;
   $dirItems.innerHTML = '';
+  dirEntries = [];
   // renderFile('..');
 
   files.forEach((file) => {
     renderFile(file);
+    dirEntries.push(file);
   });
 
-  for (file of $dirItems.children) {
-    file.querySelector('.file-name span')
+  console.log(dirEntries.length);
+  for (let i = 0; i < dirEntries.length; i++) {
+    $dirItems.children[i]
       .addEventListener('dblclick', (e) => {
-        dirRequest(path.join(curDir, e.target.innerHTML));
+        dirRequest(dirEntries[i].path);
       });
   }
 });
@@ -52,15 +56,25 @@ ipcRenderer.on('fileNotFound', (e, file) => {
   alert(`File ${file} not found.`);
 });
 
+ipcRenderer.on('returnDir', (e, file) => {
+  ipcRenderer.send('dirReturn', curDir)
+});
+
+document.addEventListener('contextmenu', (e) => {
+  ipcRenderer.send('contextMenu');
+});
+
 function renderFile({
   name,
   icon,
   sizestring,
-  mtimestring
+  mtimestring,
+  type
 }) {
   const render = Mustache.render(fileTemplate, {
     name,
-    modified : mtimestring,
+    type,
+    modified: mtimestring,
     size: sizestring,
     icon: icon.name,
     color: icon.color

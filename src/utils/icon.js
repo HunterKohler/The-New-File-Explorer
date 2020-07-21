@@ -20,9 +20,10 @@ class Icon {
   }
 
   /**
-   * @param iconConfig from config.cson
+   * @param {Object} iconConfig from config.cson
+   * @param {String} type key from config[i]
    */
-  constructor(iconConfig) {
+  constructor(iconConfig, type) {
     const {
       matchPath,
       icon,
@@ -31,6 +32,7 @@ class Icon {
       priority
     } = iconConfig;
 
+    this.type = type;
     this.matchPath = matchPath;
     this.icon = icon;
     this.match = match instanceof Array ? match : [
@@ -57,7 +59,7 @@ class Icon {
   }
 
   min(color) {
-    return new IconMin(this.icon, color)
+    return new IconMin(this.icon, color, this.type)
   }
 }
 
@@ -70,9 +72,10 @@ class IconMin {
    * @param  {String} color description
    * @return {IconMin}       description
    */
-  constructor(icon, color) {
+  constructor(icon, color, type) {
     this.name = `${icon}-icon`;
     this.color = color;
+    this.type = type;
   }
 }
 
@@ -107,7 +110,7 @@ const config = {};
 for (const i of Object.keys(configCSON)) {
   config[i] = {};
   for (const j of Object.keys(configCSON[i])) {
-    config[i][j] = new Icon(configCSON[i][j])
+    config[i][j] = new Icon(configCSON[i][j], j)
   }
 }
 

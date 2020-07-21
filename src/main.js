@@ -21,7 +21,8 @@ const {
 } = require('./utils/windows');
 
 const {
-  mainMenu
+  mainMenu,
+  contextMenu
 } = require('./utils/menus');
 
 // NOTE Not supporting MACOS
@@ -46,3 +47,7 @@ ipcMain.on('dirRequest', (e, dirPath) => {
     shell.openPath(dirPath);
   }
 });
+
+ipcMain.on('contextMenu', (e) => {
+  contextMenu.popup(e.sender);
+})
