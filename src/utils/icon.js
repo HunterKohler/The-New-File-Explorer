@@ -57,10 +57,22 @@ class Icon {
   }
 
   min(color) {
-    return {
-      color,
-      name: `${this.icon}-icon`,
-    }
+    return new IconMin(this.icon, color)
+  }
+}
+
+class IconMin {
+
+  /**
+   * constructor - description
+   *
+   * @param  {String} icon  description
+   * @param  {String} color description
+   * @return {IconMin}       description
+   */
+  constructor(icon, color) {
+    this.name = `${icon}-icon`;
+    this.color = color;
   }
 }
 
@@ -88,7 +100,7 @@ function getIcon(file) {
 
 // Initialize config
 // TODO figure out why path.join has to be used ????
-let configPath = require('path').join(__dirname, '../../public/icons/config.cson');
+let configPath = require('path').join(__dirname, '../icons/config.cson');
 const configCSON = CSON.load(configPath);
 const config = {};
 
@@ -102,5 +114,6 @@ for (const i of Object.keys(configCSON)) {
 module.exports = {
   Icon,
   config,
-  getIcon
+  getIcon,
+  IconMin
 }

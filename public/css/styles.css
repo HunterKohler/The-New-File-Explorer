@@ -16,11 +16,11 @@ input, select, textarea, button {
   font-family: inherit;
 }
 
-input{
+input {
   border: 0;
 }
 
-input:focus{
+input:focus {
   outline-width: 0;
 }
 
@@ -45,16 +45,51 @@ input:focus{
   display: none;
 }
 
-.file {
-  margin-bottom: -16px;
+.file-container {
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  height: 30px;
 }
 
-.file :hover {
+.file-container:hover {
   background-color: rgb(100, 100, 100);
 }
 
-.file p {
-  padding: 5px;
+.file-container span {
+  margin: 0;
+}
+
+.file-name {
+  width: 20%;
+  overflow: hidden;
+  margin: 5px 25px 5px 10px;
+  white-space:nowrap;
+}
+
+.file-icon {
+  text-align: center;
+}
+
+.file-type {
+  width: 20%;
+  overflow: hidden;
+  margin: 5px 25px 5px 10px;
+  white-space:nowrap;
+}
+
+.file-size {
+  width: 20%;
+  overflow: hidden;
+  margin: 5px 25px 5px 10px;
+  white-space:nowrap;
+}
+
+.file-modified {
+  width: 20%;
+  overflow: hidden;
+  margin: 5px 25px 5px 10px;
+  white-space:nowrap;
 }
 
 #dir-path-form {
@@ -82,4 +117,25 @@ input:focus{
   background: transparent;
   flex: 1;
   padding-left: 15px;
+}
+
+#dir-items-header {
+  background-color: rgb(175, 175, 175);
+  display: flex;
+  align-items: center;
+}
+
+/* TODO make singular class for file-info headers and instances */
+.file-info {
+  height: 100%;
+  width: 20%;
+  overflow: hidden;
+  margin: 5px 25px 5px 10px;
+  border-left: 1px solid grey;
+}
+
+#dir-items-header p {
+  margin: 0;
+  color: black;
+  padding: 0px 10px;
 }

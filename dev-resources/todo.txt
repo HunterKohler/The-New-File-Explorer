@@ -1,1 +1,3 @@
 TODO credit those of file-icons and dependencies
+TODO make css into compile-able less formats (or sass?)
+TODO fix specific non-existent or incorrect file icons

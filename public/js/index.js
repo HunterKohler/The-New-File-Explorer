@@ -10,30 +10,37 @@ const Mustache = require('mustache');
 
 let curDir = '/';
 
-const $fileContainer = document.querySelector('#file-container');
-const $directoryPathForm = document.querySelector('#dir-path-form');
-const $directoryPath = document.querySelector('#dir-path-input');
+const $dirPathForm = document.querySelector('#dir-path-form');
+const $dirPath = document.querySelector('#dir-path-input');
+
+const $dirItemsHeader = document.querySelector('#dir-items-header');
+const $dirHeaderName = document.querySelector('#dir-header-name');
+const $dirHeaderType = document.querySelector('#dir-header-type');
+const $dirHeaderSize = document.querySelector('#dir-header-size');
+const $dirHeaderModified = document.querySelector('#dir-header-modified');
+
+const $dirItems = document.querySelector('#dir-items');
 
 const fileTemplate = document.querySelector('#file-template').innerHTML;
 
-$directoryPathForm.addEventListener('submit', (e) => {
+$dirPathForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  dirRequest($directoryPath.value);
+  dirRequest($dirPath.value);
 });
 
 ipcRenderer.on('dirContent', (e, dirPath, files) => {
   curDir = dirPath;
-  $directoryPath.value = curDir;
-  $fileContainer.innerHTML = '';
+  $dirPath.value = curDir;
+  $dirItems.innerHTML = '';
   // renderFile('..');
 
   files.forEach((file) => {
     renderFile(file);
   });
 
-  for (file of $fileContainer.children) {
-    file.querySelector('.file-name')
+  for (file of $dirItems.children) {
+    file.querySelector('.file-name span')
       .addEventListener('dblclick', (e) => {
         dirRequest(path.join(curDir, e.target.innerHTML));
       });
@@ -47,13 +54,18 @@ ipcRenderer.on('fileNotFound', (e, file) => {
 
 function renderFile({
   name,
-  icon
+  icon,
+  sizestring,
+  mtimestring
 }) {
   const render = Mustache.render(fileTemplate, {
     name,
-    iconClass: icon ? `${icon.name} ${icon.color}` : ''
+    modified : mtimestring,
+    size: sizestring,
+    icon: icon.name,
+    color: icon.color
   });
-  $fileContainer.insertAdjacentHTML('beforeend', render);
+  $dirItems.insertAdjacentHTML('beforeend', render);
 }
 
 function dirRequest(dirPath) {

@@ -135,22 +135,22 @@
   font-family: FontAwesome;
 }
 
-.fa-folder:before {
+.folder-icon:before {
   font-family: FontAwesome;
   content: "\f07b";
 }
 
-.fa-folder-open:before {
+.folder-open-icon:before {
   font-family: FontAwesome;
   content: "\f07c";
 }
 
-.fa-folder-o:before {
+.folder-o-icon:before {
   font-family: FontAwesome;
   content: "\f114";
 }
 
-.fa-folder-open-o:before {
+.folder-open-o-icon:before {
   font-family: FontAwesome;
   content: "\f115";
 }

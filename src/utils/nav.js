@@ -1,4 +1,6 @@
 const fs = require('fs');
+const path = require('path');
+
 const homedir = require('os').homedir();
 
 const electron = require('electron');
@@ -20,7 +22,7 @@ async function dirLoad(webContent, dirPath = homedir) {
   fs.readdir(dirPath, {
     withFileTypes: true
   }, (error, files) => {
-    files = files.map((file) => new File(file.name, file.isDirectory()));
+  files = files.map((file) => new File(path.join(dirPath, file.name)));
 
     webContent.send('dirContent', dirPath, files);
   });

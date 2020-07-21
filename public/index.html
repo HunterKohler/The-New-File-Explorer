@@ -12,10 +12,8 @@
 <body>
   <header id="main-header">
     <div>
-      <!-- <div class="fa fa-folder-open-o-fa-x2" id="header-icon"></div> -->
-
       <form id="dir-path-form">
-        <label class=".icon fa-folder-open" id="dir-path-icon"></label>
+        <label class="folder-open-icon" id="dir-path-icon"></label>
         <div id="dir-path-divider"></div>
         <input id="dir-path-input" type="text" name="dirPath">
       </form>
@@ -23,16 +21,42 @@
   </header>
 
   <div id="main-content">
-    <div id="file-container"></div>
+    <!-- Add this info to File class -->
+    <div id="dir-items-header">
+      <div class="file-info" id="dir-header-name">
+        <p>Name</p>
+      </div>
+
+      <div class="file-info" id="dir-header-type">
+        <p>Type</p>
+      </div>
+
+      <div class="file-info" id="dir-header-size">
+        <p>Size</p>
+      </div>
+
+      <div class="file-info" id="dir-header-modified">
+        <p>Modified</p>
+      </div>
+    </div>
+    <div id="dir-items"></div>
   </div>
 
   <div class="template" id="file-template">
-    <div class="file-info-container">
+    <div class="file-container">
       <div class="file-name noselect">
-        <p>{{name}}</p>
+        <span>{{name}}</span>
       </div>
-
-      <div class="{{iconClass}}"></div>
+      <div class="file-type">
+        <span class="file-icon {{icon}} {{color}}"></span>
+        <span>{{type}}</span>
+      </div>
+      <div class="file-size">
+        <span>{{size}}</span>
+      </div>
+      <div class="file-modified">
+        <span>{{modified}}</span>
+      </div>
     </div>
   </div>
 
