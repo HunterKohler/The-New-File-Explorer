@@ -12,7 +12,8 @@ const {
 
 const {
   dirLoad,
-  fileNotFound
+  fileNotFound,
+  openFile
 } = require('./utils/nav');
 
 const {
@@ -22,7 +23,7 @@ const {
 
 const {
   mainMenu,
-  contextMenu
+  buildContextMenu
 } = require('./utils/menus');
 
 // NOTE Not supporting MACOS
@@ -38,16 +39,10 @@ ipcMain.on('message', (e, message) => {
 });
 
 ipcMain.on('dirRequest', (e, dirPath) => {
-  if (!fs.existsSync(dirPath)) {
-    // TODO Could split into dir and file messages
-    fileNotFound(e.sender, dirPath);
-  } else if (fs.statSync(dirPath).isDirectory()) {
-    dirLoad(e.sender, dirPath);
-  } else {
-    shell.openPath(dirPath);
-  }
+  openFile(e.sender, dirPath);
 });
 
-ipcMain.on('contextMenu', (e) => {
-  contextMenu.popup(e.sender);
-})
+
+ipcMain.on('contextMenu', (e, dirPath, filePath) => {
+  buildContextMenu(e.sender, dirPath, filePath).popup(e.sender);
+});

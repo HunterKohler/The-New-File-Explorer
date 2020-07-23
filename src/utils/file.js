@@ -51,7 +51,8 @@ class File {
    *  @return {String}      custom format for date
    */
   static dateString(date){
-    return date.toString()
+    const arr = date.toDateString().split(' ');
+    return `${arr[1]} ${arr[2]}`
   }
 
   //TODO customize sizeString

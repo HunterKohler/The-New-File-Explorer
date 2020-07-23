@@ -6,13 +6,14 @@ const homedir = require('os').homedir();
 
 const {
   Menu,
-  app,
-  ipcMain
+  app
 } = require('electron');
 
 const {
   dirLoad,
-  currentDir
+  currentDir,
+  openFile,
+  reload
 } = require('./nav');
 
 const {
@@ -120,73 +121,77 @@ const mainMenuTemplate = [{
 ];
 
 
-const contextMenuTemplate = [{
-    label: 'Open File'
-  },
-  {
-    label: 'Open File With...'
-  },
-  {
-    type: 'separator'
-  },
-  {
-    label: 'Rename'
-  },
-  {
-    label: 'Duplicate'
-  },
-  {
-    label: 'Cut'
-  },
-  {
-    label: 'Copy'
-  },
-  {
-    label: 'Cut'
-  },
-  {
-    label: 'Paste'
-  },
-  {
-    type: 'separator'
-  },
-  {
-    label: 'Copy Full Path'
-  },
-  {
-    label: 'Copy Folder path'
-  },
-  {
-    type: 'separator'
-  },
-  {
-    label: 'New File'
-  },
-  {
-    label: 'New Folder'
-  },
-  {
-    type: 'separator'
-  },
-  {
-    label: 'New Tab Here'
-  },
-  {
-    label: 'New Window Here'
-  },
-  {
-    type: 'separator'
-  },
-  {
-    label: 'New Terminal Here',
-    click(item, win) {
-      win.webContents.send('returnDir');
-      ipcMain.once('dirReturn', (e, dirPath) => {
+function  buildContextMenu(currentWebContents, dirPath, filePath){
+  const contextMenuTemplate = [{
+      label: 'Open File',
+      click() {
+        openFile(currentWebContents, filePath);
+      }
+    },
+    {
+      label: 'Open File With...'
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Rename'
+    },
+    {
+      label: 'Duplicate'
+    },
+    {
+      label: 'Cut'
+    },
+    {
+      label: 'Copy'
+    },
+    {
+      label: 'Cut'
+    },
+    {
+      label: 'Paste'
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Copy Full Path'
+    },
+    {
+      label: 'Copy Folder path'
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'New File'
+    },
+    {
+      label: 'New Folder'
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'New Tab Here'
+    },
+    {
+      label: 'New Window Here'
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'New Terminal Here',
+      click(item, win) {
         exec(`gnome-terminal --working-directory=${dirPath}`);
-      });
+      }
     }
-  }
-]
+  ]
+
+  return Menu.buildFromTemplate(contextMenuTemplate);
+}
 
 
 
@@ -206,7 +211,7 @@ if (process.env.NODE_ENV === 'development') {
         click(item, {
           webContents
         }) {
-          dirLoad(webContents);
+          reload(webContents)
         }
       }
     ]
@@ -214,9 +219,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-const contextMenu = Menu.buildFromTemplate(contextMenuTemplate);
 
 module.exports = {
   mainMenu,
-  contextMenu
+  buildContextMenu
 };

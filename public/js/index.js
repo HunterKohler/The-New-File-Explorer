@@ -11,43 +11,46 @@ const Mustache = require('mustache');
 let curDir = '/';
 let dirEntries = [];
 
-const $dirPathForm = document.querySelector('#dir-path-form');
-const $dirPath = document.querySelector('#dir-path-input');
-
-const $dirItemsHeader = document.querySelector('#dir-items-header');
-const $dirHeaderName = document.querySelector('#dir-header-name');
-const $dirHeaderType = document.querySelector('#dir-header-type');
-const $dirHeaderSize = document.querySelector('#dir-header-size');
-const $dirHeaderModified = document.querySelector('#dir-header-modified');
-
-const $dirItems = document.querySelector('#dir-items');
-
-const fileTemplate = document.querySelector('#file-template').innerHTML;
-
-$dirPathForm.addEventListener('submit', (e) => {
+$('#dir-path-form').submit((e) => {
   e.preventDefault();
-
-  dirRequest($dirPath.value);
+  dirRequest($('#dir-path-input').val());
 });
 
 ipcRenderer.on('dirContent', (e, dirPath, files) => {
   curDir = dirPath;
-  $dirPath.value = curDir;
-  $dirItems.innerHTML = '';
   dirEntries = [];
+  $('#dir-path-input').val(curDir);
+  $('#dir-items .file-info').remove();
   // renderFile('..');
 
   files.forEach((file) => {
-    renderFile(file);
     dirEntries.push(file);
+    renderFile(file);
   });
 
-  console.log(dirEntries.length);
   for (let i = 0; i < dirEntries.length; i++) {
-    $dirItems.children[i]
-      .addEventListener('dblclick', (e) => {
-        dirRequest(dirEntries[i].path);
-      });
+    const fileRow = $(`[data-index="${i}"]`);
+    let secondClick = false;
+
+    fileRow.on('dblclick', (e) => {
+      dirRequest(dirEntries[i].path);
+    }).on('contextmenu', (e) => {
+      contextRequest(dirEntries[i].path);
+    }).hover((e) => {
+      fileRow.css('background-color', 'rgb(100,100,100)');
+    }, (e) => {
+      fileRow.css('background-color', 'rgb(50,50,50)');
+    }).click(async function(e) {
+      let that = $(this);
+      let secondClick = false;
+
+      if(!secondClick){
+        console.log(1);
+      }
+      else{
+        console.log(2);
+      }
+    });
   }
 });
 
@@ -60,26 +63,53 @@ ipcRenderer.on('returnDir', (e, file) => {
   ipcRenderer.send('dirReturn', curDir)
 });
 
-document.addEventListener('contextmenu', (e) => {
-  ipcRenderer.send('contextMenu');
-});
-
 function renderFile({
   name,
   icon,
   sizestring,
   mtimestring,
-  type
+  type,
+  path
 }) {
-  const render = Mustache.render(fileTemplate, {
-    name,
-    type,
-    modified: mtimestring,
-    size: sizestring,
-    icon: icon.name,
-    color: icon.color
-  });
-  $dirItems.insertAdjacentHTML('beforeend', render);
+  let index = dirEntries.length - 1;
+
+  $('#name-box .info-box').append(
+    Mustache.render(
+      $('#file-name-template').html(), {
+        name,
+        index
+      }
+    )
+  )
+
+  $('#type-box .info-box').append(
+    Mustache.render(
+      $('#file-type-template').html(), {
+        icon: icon.name,
+        color: icon.color,
+        type,
+        index
+      }
+    )
+  )
+
+  $('#size-box .info-box').append(
+    Mustache.render(
+      $('#file-size-template').html(), {
+        size: sizestring,
+        index
+      }
+    )
+  )
+
+  $('#modified-box .info-box').append(
+    Mustache.render(
+      $('#file-modified-template').html(), {
+        modified: mtimestring,
+        index
+      }
+    )
+  )
 }
 
 function dirRequest(dirPath) {
@@ -88,4 +118,8 @@ function dirRequest(dirPath) {
 
 async function sendMessage(message) {
   ipcRenderer.send('message', message);
+}
+
+async function contextRequest(filePath) {
+  ipcRenderer.send('contextMenu', curDir, filePath)
 }

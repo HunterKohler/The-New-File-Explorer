@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="./css/fonts.css">
   <link rel="stylesheet" href="./css/icons.css">
   <link rel="stylesheet" href="./css/colors.css">
+
+  <link rel="stylesheet" href="./jquery-ui/jquery-ui.css">
+  <script>
+    const $ = jQuery = require('jquery');
+  </script>
+  <script src="./jquery-ui/jquery-ui.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -15,50 +21,65 @@
       <form id="dir-path-form">
         <label class="folder-open-icon" id="dir-path-icon"></label>
         <div id="dir-path-divider"></div>
-        <input id="dir-path-input" type="text" name="dirPath">
+        <input id="dir-path-input" type="text" name="dirPath" value="">
       </form>
-
-      <div id="dir-items-header">
-        <div class="file-info" id="dir-header-name">
-          <p>Name</p>
-        </div>
-
-        <div class="file-info" id="dir-header-type">
-          <p>Type</p>
-        </div>
-
-        <div class="file-info" id="dir-header-size">
-          <p>Size</p>
-        </div>
-
-        <div class="file-info" id="dir-header-modified">
-          <p>Modified</p>
-        </div>
-      </div>
     </header>
 
-    <div id="main-content">
-      <div id="dir-items"></div>
+    <div id="dir-items" class="noselect">
+      <div id="name-box">
+        <div class="info-header">
+          <span>Name</span>
+        </div>
+        <div class="info-box"></div>
+      </div>
+      <div id="type-box">
+        <div class="info-header">
+          <span>Type</span>
+        </div>
+        <div class="info-box"></div>
+      </div>
+      <div id="size-box">
+        <div class="info-header">
+          <span>Size</span>
+        </div>
+        <div class="info-box"></div>
+      </div>
+      <div id="modified-box">
+        <div class="info-header">
+          <span>Modified</span>
+        </div>
+        <div class="info-box"></div>
+      </div>
     </div>
   </div>
 
-  <div class="template" id="file-template">
-    <div class="file-container noselect">
-      <div class="file-name">
+  <div class="templates">
+    <div id="file-name-template">
+      <div class="file-info file-name" data-index="{{index}}">
         <span>{{name}}</span>
       </div>
-      <div class="file-type">
+    </div>
+
+    <div id="file-type-template">
+      <div class="file-info file-type" data-index="{{index}}">
         <span class="file-icon {{icon}} {{color}}"></span>
         <span>{{type}}</span>
       </div>
-      <div class="file-size">
+    </div>
+
+    <div id="file-size-template">
+      <div class="file-info file-size" data-index="{{index}}">
         <span>{{size}}</span>
       </div>
-      <div class="file-modified">
+    </div>
+
+    <div id="file-modified-template">
+      <div class="file-info file-modified" data-index="{{index}}">
         <span>{{modified}}</span>
       </div>
     </div>
   </div>
+
 
   <script src="./js/index.js" type="text/javascript"></script>
 </body>

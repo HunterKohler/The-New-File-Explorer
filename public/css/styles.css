@@ -26,70 +26,16 @@ input:focus {
 
 /* TODO Style scrollbar */
 .noselect {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Safari */
-  -khtml-user-select: none;
-  /* Konqueror HTML */
-  -moz-user-select: none;
-  /* Old versions of Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
   user-select: none;
-  /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
-.template {
+.templates {
   display: none;
 }
 
-.file-container {
-  border-bottom: 1px solid black;
+#content {
   display: flex;
-  align-items: center;
-  height: 30px;
-}
-
-.file-container:hover {
-  background-color: rgb(100, 100, 100);
-}
-
-.file-container span {
-  margin: 0;
-}
-
-.file-name {
-  width: 20%;
-  overflow: hidden;
-  margin: 5px 25px 5px 10px;
-  white-space: nowrap;
-}
-
-.file-icon {
-  text-align: center;
-}
-
-.file-type {
-  width: 20%;
-  overflow: hidden;
-  margin: 5px 25px 5px 10px;
-  white-space: nowrap;
-}
-
-.file-size {
-  width: 20%;
-  overflow: hidden;
-  margin: 5px 25px 5px 10px;
-  white-space: nowrap;
-}
-
-.file-modified {
-  width: 20%;
-  overflow: hidden;
-  margin: 5px 25px 5px 10px;
-  white-space: nowrap;
+  flex-direction: column;
 }
 
 #dir-path-form {
@@ -119,39 +65,72 @@ input:focus {
   padding-left: 15px;
 }
 
-#dir-items-header {
-  background-color: rgb(175, 175, 175);
-  min-height:30px;
+#dir-items {
+  display: flex;
+  border-bottom: 1px solid rgb(100,100,100);
+}
+
+#dir-items>:not(:first-child){
+  border-left: 1px solid rgb(100,100,100);
+}
+
+#name-box{
+  flex: 1;
+}
+
+#type-box{
+  width: 150px
+}
+
+#size-box{
+  width: 100px;
+}
+
+#modified-box{
+  width: 150px;
+}
+
+
+.info-header {
+  background: rgb(150, 150, 150);
+  color: black;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid grey;
+}
+
+.info-header span {
+  padding-left: 15px;
+}
+
+.info-box{
+
+}
+
+.file-info {
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0px 10px;
+  height: 30px;
   display: flex;
   align-items: center;
 }
 
-/* TODO make singular class for file-info headers and instances */
-.file-info {
-  height: 100%;
-  width: 20%;
-  overflow: hidden;
-  margin: 5px 25px 5px 10px;
-  border-left: 1px solid grey;
+.file-icon {
+  padding-right: 5px;
 }
 
-#dir-items-header p {
-  margin: 0;
-  color: black;
-  padding: 0px 10px;
+.file-size{
+  padding: 0;
 }
 
-#content{
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
-  display: flex;
-  flex-direction: column;
+.file-size span{
+  width: 100%;
+  text-align: right;
+  padding-right: 10px;
 }
 
-#main-content {
-  overflow-y: auto;
-  flex-grow:1;
+.file-modified{
+  padding-left: 10px;
 }
