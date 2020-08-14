@@ -3,7 +3,6 @@ const fs = require('fs')
 const electron = {
     ipcRenderer
 } = require('electron')
-const jquery = $ = require('jquery')
 const Mustache = require('mustache')
 
 let curDir = '/'
