@@ -90,6 +90,7 @@ input:focus {
 #info-bar > * {
     flex: 1;
     padding: 0 10px;
+    resize: horizontal;
 }
 
 #info-bar *, .file-row * {

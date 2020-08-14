@@ -17,6 +17,7 @@ const $dirPathForm = dqs('#dir-path-form')
 const $dirPathInput = dqs('#dir-path-input')
 const $fileRowTemplate = dqs('#file-row-template')
 const $dirFiles = dqs('#dir-files')
+const $infoBar = dqs('#info-bar')
 
 $dirPathForm.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -69,6 +70,20 @@ function renderFile(index) {
     $file.addEventListener('dblclick', (e) => {
         dirRequest(dirEntries[$file.dataset.index].path)
     })
+
+    // console.log($file.children)
+    // $file.children.forEach((element, index) => {
+    //     new ResizeObserver(() => {
+    //         resize($file.dataset.index, index)
+    //     }).observe(element)
+    // })
+
+
+    for(let j = 0; j < $file.children.length; j++) {
+        new ResizeObserver(() => {
+            resize(index, j)
+        }).observe($file.children[j])
+    }
 }
 
 function dirRequest(dirPath) {
@@ -81,4 +96,26 @@ async function sendMessage(message) {
 
 async function contextRequest(filePath) {
     ipcRenderer.send('contextMenu', curDir, filePath)
+}
+
+ function resize(row, column) {
+    const width = $dirFiles
+        .children[row]
+        .children[column]
+        .style
+        .width
+
+    $infoBar
+        .children[column]
+        .style
+        .width = width
+
+    for(let i = 0; i < $dirFiles.children.length; i++) {
+        if(i != row) {
+            $dirFiles.children[i]
+            .children[column]
+            .style
+            .width = width
+        }
+    }
 }
