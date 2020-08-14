@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html, body {
   padding: 0;
   margin: 0;
@@ -9,7 +13,7 @@ body {
   font-weight: 500;
   color: rgb(200, 200, 200);
   background-color: rgb(50, 50, 50);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 input, select, textarea, button {
@@ -34,9 +38,11 @@ input:focus {
 }
 
 #content {
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
+
 
 #dir-path-form {
   display: flex;
@@ -65,72 +71,68 @@ input:focus {
   padding-left: 15px;
 }
 
-#dir-items {
-  display: flex;
-  border-bottom: 1px solid rgb(100,100,100);
+.dir-window {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
 }
 
-#dir-items>:not(:first-child){
-  border-left: 1px solid rgb(100,100,100);
+#info-bar {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(200, 200, 200);
+    color: black;
 }
 
-#name-box{
-  flex: 1;
+#info-bar > * {
+    flex: 1;
+    padding: 0 10px;
 }
 
-#type-box{
-  width: 150px
+#info-bar *, .file-row * {
+    border: 1px solid black;
 }
 
-#size-box{
-  width: 100px;
+#dir-files {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
 }
 
-#modified-box{
-  width: 150px;
+.file-row {
+    border: 1px solid black;
+    min-height: 30px;
+    display: flex;
+    width: min-content;
 }
 
-
-.info-header {
-  background: rgb(150, 150, 150);
-  color: black;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  border-left: 1px solid grey;
+.file-row:hover {
+    background-color: rgb(100, 100, 100);
+    color: black;
 }
 
-.info-header span {
-  padding-left: 15px;
+.file-row > * {
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    resize: horizontal;
+
+    width: 200px;
+    min-width: 100px;
 }
 
-.info-box{
-
-}
-
-.file-info {
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 0px 10px;
-  height: 30px;
-  display: flex;
-  align-items: center;
+.file-row span {
+    overflow-x: hidden;
 }
 
 .file-icon {
-  padding-right: 5px;
-}
-
-.file-size{
-  padding: 0;
-}
-
-.file-size span{
-  width: 100%;
-  text-align: right;
-  padding-right: 10px;
-}
-
-.file-modified{
-  padding-left: 10px;
+    margin-right:5px;
 }

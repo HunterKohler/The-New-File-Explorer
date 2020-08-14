@@ -1,125 +1,85 @@
-const path = require('path');
-const fs = require('fs');
+const path = require('path')
+const fs = require('fs')
+const electron = {
+    ipcRenderer
+} = require('electron')
+const jquery = $ = require('jquery')
+const Mustache = require('mustache')
 
-const electron = require('electron');
-const {
-  ipcRenderer
-} = electron;
+let curDir = '/'
+let dirEntries = []
 
-const Mustache = require('mustache');
+const qs = (element, str) => element.querySelector(str)
+const qsAll = (element, srt) => element.querySelectorAll(str)
+const dqs = (str) => qs(document, str)
+const dqsAll = (str) => qs(document, str)
 
-let curDir = '/';
-let dirEntries = [];
+const $dirPathForm = dqs('#dir-path-form')
+const $dirPathInput = dqs('#dir-path-input')
+const $fileRowTemplate = dqs('#file-row-template')
+const $dirFiles = dqs('#dir-files')
 
-$('#dir-path-form').submit((e) => {
-  e.preventDefault();
-  dirRequest($('#dir-path-input').val());
-});
+$dirPathForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    dirRequest($dirPathInput.value)
+})
 
 ipcRenderer.on('dirContent', (e, dirPath, files) => {
-  curDir = dirPath;
-  dirEntries = [];
-  $('#dir-path-input').val(curDir);
-  $('#dir-items .file-info').remove();
-  // renderFile('..');
+    curDir = dirPath
+    dirEntries = []
+    $dirPathInput.value = dirPath
+    $dirFiles.innerHTML = ''
 
-  files.forEach((file) => {
-    dirEntries.push(file);
-    renderFile(file);
-  });
-
-  for (let i = 0; i < dirEntries.length; i++) {
-    const fileRow = $(`[data-index="${i}"]`);
-    let secondClick = false;
-
-    fileRow.on('dblclick', (e) => {
-      dirRequest(dirEntries[i].path);
-    }).on('contextmenu', (e) => {
-      contextRequest(dirEntries[i].path);
-    }).hover((e) => {
-      fileRow.css('background-color', 'rgb(100,100,100)');
-    }, (e) => {
-      fileRow.css('background-color', 'rgb(50,50,50)');
-    }).click(async function(e) {
-      let that = $(this);
-      let secondClick = false;
-
-      if(!secondClick){
-        console.log(1);
-      }
-      else{
-        console.log(2);
-      }
-    });
-  }
-});
+    files.forEach((file, index) => {
+        dirEntries.push(file)
+        renderFile(index)
+    })
+})
 
 ipcRenderer.on('fileNotFound', (e, file) => {
-  dirRequest(curDir);
-  alert(`File ${file} not found.`);
-});
+    dirRequest(curDir)
+    alert(`File ${file} not found.`)
+})
 
 ipcRenderer.on('returnDir', (e, file) => {
-  ipcRenderer.send('dirReturn', curDir)
-});
+    ipcRenderer.send('dirReturn', curDir)
+})
 
-function renderFile({
-  name,
-  icon,
-  sizestring,
-  mtimestring,
-  type,
-  path
-}) {
-  let index = dirEntries.length - 1;
-
-  $('#name-box .info-box').append(
-    Mustache.render(
-      $('#file-name-template').html(), {
+function renderFile(index) {
+    const {
         name,
-        index
-      }
-    )
-  )
-
-  $('#type-box .info-box').append(
-    Mustache.render(
-      $('#file-type-template').html(), {
-        icon: icon.name,
-        color: icon.color,
+        icon,
+        sizestring,
+        mtimestring,
         type,
-        index
-      }
-    )
-  )
+        path
+    } = dirEntries[index]
 
-  $('#size-box .info-box').append(
-    Mustache.render(
-      $('#file-size-template').html(), {
-        size: sizestring,
-        index
-      }
-    )
-  )
+    const template = $fileRowTemplate.innerHTML
+    $dirFiles.insertAdjacentHTML('beforeend',
+        Mustache.render(template, {
+            index,
+            name,
+            type,
+            icon,
+            size: sizestring,
+            modified: mtimestring
+        }))
 
-  $('#modified-box .info-box').append(
-    Mustache.render(
-      $('#file-modified-template').html(), {
-        modified: mtimestring,
-        index
-      }
-    )
-  )
+    const $file = $dirFiles.lastElementChild
+    $file.addEventListener('dblclick', (e) => {
+        dirRequest(dirEntries[$file.dataset.index].path)
+    })
 }
 
 function dirRequest(dirPath) {
-  ipcRenderer.send('dirRequest', dirPath);
+    ipcRenderer.send('dirRequest', dirPath)
 }
 
 async function sendMessage(message) {
-  ipcRenderer.send('message', message);
+    ipcRenderer.send('message', message)
 }
 
 async function contextRequest(filePath) {
-  ipcRenderer.send('contextMenu', curDir, filePath)
+    ipcRenderer.send('contextMenu', curDir, filePath)
 }

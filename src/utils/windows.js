@@ -20,7 +20,8 @@ function createWindow(dirPath = homedir, relativeWindow) {
     // icon: '../../',
     webPreferences: {
       nodeIntegration: true,
-      devTools: process.env.NODE_ENV === 'development'
+      devTools: process.env.NODE_ENV === 'development',
+      preload: './utils/preload.js'
     }
   };
 

@@ -193,8 +193,6 @@ function  buildContextMenu(currentWebContents, dirPath, filePath){
   return Menu.buildFromTemplate(contextMenuTemplate);
 }
 
-
-
 if (process.env.NODE_ENV === 'development') {
   mainMenuTemplate.push({
     label: 'DevTools',
