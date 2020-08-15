@@ -18,24 +18,28 @@
 
 
             </header>
+
             <div class="dir-window">
-                <div id="info-bar">
-                    <div id="info-bar-name">
-                        <span>Name</span>
-                    </div>
-                    <div id="info-bar-type">
-                        <span>Type</span>
-                    </div>
-                    <div id="info-bar-size">
-                        <span>Size</span>
-                    </div>
-                    <div id="info-bar-modified">
-                        <span>Modified</span>
+                <div id="info-bar-wrapper">
+                    <div id="info-bar">
+                        <div id="info-bar-name">
+                            <span>Name</span>
+                        </div>
+                        <div id="info-bar-type">
+                            <span>Type</span>
+                        </div>
+                        <div id="info-bar-size">
+                            <span>Size</span>
+                        </div>
+                        <div id="info-bar-modified">
+                            <span>Modified</span>
+                        </div>
                     </div>
                 </div>
                 <div id="dir-files"></div>
             </div>
         </div>
+        <!-- Maybe change to <template></template> -->
         <div class="templates">
             <div id="file-row-template">
                 <div class="file-row noselect" data-index="{{index}}">

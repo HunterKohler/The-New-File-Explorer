@@ -43,7 +43,6 @@ input:focus {
   flex-direction: column;
 }
 
-
 #dir-path-form {
   display: flex;
   align-items: center;
@@ -79,38 +78,61 @@ input:focus {
     flex-direction: column;
 }
 
+.dir-window ::-webkit-resizer {
+  display: none;
+}
+
+#info-bar-wrapper {
+    width: 100%;
+    height: 30px;
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+#info-bar-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
 #info-bar {
     height: 30px;
     display: flex;
     align-items: center;
     background-color: rgb(200, 200, 200);
     color: black;
+    width: min-content;
 }
 
 #info-bar > * {
-    flex: 1;
-    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+    overflow: hidden;
+    white-space: nowrap;
     resize: horizontal;
-}
 
-#info-bar *, .file-row * {
-    border: 1px solid black;
+    width: 200px;
+    min-width: 100px;
+    height: inherit;
 }
 
 #dir-files {
     flex: 1;
     min-height: 0;
 
+    width: 100%;
+
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    overflow-x: scroll;
 }
 
 .file-row {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     min-height: 30px;
     display: flex;
+    align-items: center;
     width: min-content;
+    border-bottom: 1px solid black;
 }
 
 .file-row:hover {
@@ -125,7 +147,6 @@ input:focus {
     overflow: hidden;
     white-space: nowrap;
     resize: horizontal;
-
     width: 200px;
     min-width: 100px;
 }

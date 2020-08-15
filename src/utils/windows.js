@@ -20,8 +20,7 @@ function createWindow(dirPath = homedir, relativeWindow) {
     // icon: '../../',
     webPreferences: {
       nodeIntegration: true,
-      devTools: process.env.NODE_ENV === 'development',
-      preload: './utils/preload.js'
+      devTools: process.env.NODE_ENV === 'development'
     }
   };
 
@@ -33,7 +32,7 @@ function createWindow(dirPath = homedir, relativeWindow) {
 
   let newWindow = new BrowserWindow(options);
 
-  newWindow.loadFile('../public/index.html').then(() => {
+  newWindow.loadFile('./static/index.html').then(() => {
     dirLoad(newWindow, dirPath);
   });
 
