@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "bignumber.js": "^9.0.0",
+    "chokidar": "^3.4.2",
     "cson": "^7.15.0",
     "mustache": "^4.0.1"
   }

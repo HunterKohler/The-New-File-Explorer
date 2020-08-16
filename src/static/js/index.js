@@ -4,6 +4,7 @@ const electron = {
     ipcRenderer
 } = require('electron')
 const Mustache = require('mustache')
+const chokidar = require('chokidar')
 
 let curDir = '/'
 let dirEntries = []
@@ -21,6 +22,8 @@ const $infoBar = dqs('#info-bar')
 const $dirWindow = dqs('.dir-window')
 const $infoBarWrapper = dqs('#info-bar-wrapper')
 
+let observers = []
+
 $dirPathForm.addEventListener('submit', (e) => {
     e.preventDefault()
     dirRequest($dirPathInput.value)
@@ -36,6 +39,14 @@ ipcRenderer.on('dirContent', (e, dirPath, files) => {
         dirEntries.push(file)
         renderFile(index)
     })
+
+    for(let j = 0; j < $infoBar.children.length; j++) {
+        observers.push(new ResizeObserver(() => {
+            resize(-1, j)
+        }).observe($infoBar.children[j]))
+    }
+
+    // watch(curDir)
 })
 
 ipcRenderer.on('fileNotFound', (e, file) => {
@@ -70,20 +81,25 @@ function renderFile(index) {
 
     const $file = $dirFiles.lastElementChild
     $file.addEventListener('dblclick', (e) => {
+        // console.log(observers)
+        for(resizer of observers) {
+            if(resizer){
+                resizer.disconnect()
+            }
+        }
+        observers = []
+
         dirRequest(dirEntries[$file.dataset.index].path)
     })
 
     for(let j = 0; j < $file.children.length; j++) {
-        new ResizeObserver(() => {
+        const resizer = new ResizeObserver(() => {
             resize(index, j)
-        }).observe($file.children[j])
-    }
-}
+        })
 
-for(let j = 0; j < qsAll($infoBar, 'div').length; j++) {
-    new ResizeObserver(() => {
-        resize(-1, j)
-    }).observe(qsAll($infoBar, 'div')[j])
+        resizer.observe($file.children[j])
+        observers.push(resizer)
+    }
 }
 
 $dirFiles.addEventListener('scroll', (e) => {
@@ -106,7 +122,8 @@ async function contextRequest(filePath) {
     ipcRenderer.send('contextMenu', curDir, filePath)
 }
 
-function resize(row, column) { // row -1 for infobar
+// row -1 for infobar
+function resize(row, column) {
     let width;
 
     if(row < 0) {
@@ -136,3 +153,16 @@ function resize(row, column) { // row -1 for infobar
         }
     }
 }
+
+// let watcher;
+// async function watch(dir) {
+//     if(watcher) {
+//         watcher.close()
+//     }
+//
+//     watcher = chokidar.watch(dir, { depth: 0 })
+//     watcher.on('all', (e) => {
+//         console.log(e)
+//         dirRequest(dir)
+//     })
+// }
